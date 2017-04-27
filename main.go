@@ -2,10 +2,11 @@ package main
 
 import (
 	"./maze"
+	"./chess"
 	"fmt"
 )
 
-func main() {
+func runMaze() {
 	board := [][]int{
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
@@ -37,4 +38,23 @@ func main() {
 	fmt.Println("start:", start)
 	fmt.Println("finish:", finish)
 	fmt.Println("Can find a way:", isCanPass)
+}
+
+func runChess() {
+	boardSize := 10000
+	start := chess.Coord{0, 0}
+	finish := chess.Coord{9999, 9999}
+
+	steps := chess.CountSteps(start, finish, boardSize)
+
+	fmt.Println("boardSize:", boardSize)
+	fmt.Println("start:", start)
+	fmt.Println("finish:", finish)
+	fmt.Println("steps:", steps)
+}
+
+func main() {
+	runMaze()
+	fmt.Println("====================================================")
+	runChess()
 }
