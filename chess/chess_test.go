@@ -39,6 +39,13 @@ var tests = []testpair{
 		Coord{9, 9},
 		6,
 	},
+	{
+		5,
+		1000,
+		Coord{34, 44},
+		Coord{456, 654},
+		344,
+	},
 }
 
 func TestCountSteps(t *testing.T) {
