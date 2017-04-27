@@ -66,16 +66,6 @@ func CountSteps(start Coord, finish Coord, size int) int {
 		true,
 	}
 
-	/*createCoord := func(point Coord, prev Coord) Move {
-		return Move{
-			point,
-			prev,
-			math.Sqrt(math.Pow(float64(point.X - xf), 2) + math.Pow(float64(point.Y - yf), 2)),
-			steps,
-			true,
-		}
-	}*/
-
 	visitNeighbours := func(points []Coord, step int) (result []Coord) {
 		ret := []Move{}
 		neighbours := map[string]CoordLink{}
@@ -85,8 +75,6 @@ func CountSteps(start Coord, finish Coord, size int) int {
 				val := ret[0]
 				if val.Dist > coord.Dist {
 					ret[0] = coord
-				} else {
-					//ret[0] = val
 				}
 			} else {
 				ret = append(ret, coord)
@@ -108,7 +96,7 @@ func CountSteps(start Coord, finish Coord, size int) int {
 			}
 
 			for _, c := range array {
-				neighbours[formKey(c)] = CoordLink{c, coord} //createCoord(c, coord.Value)
+				neighbours[formKey(c)] = CoordLink{c, coord}
 			}
 
 		}
