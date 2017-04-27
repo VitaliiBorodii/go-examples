@@ -1,8 +1,8 @@
 package main
 
 import (
-	"./maze"
 	"./chess"
+	"./maze"
 	"fmt"
 )
 

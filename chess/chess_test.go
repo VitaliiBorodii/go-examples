@@ -3,8 +3,8 @@ package chess
 import "testing"
 
 type testpair struct {
-	id int
-	size     int
+	id     int
+	size   int
 	start  Coord
 	finish Coord
 	result int

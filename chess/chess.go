@@ -1,9 +1,9 @@
 package chess
 
 import (
+	"fmt"
 	"math"
 	"strconv"
-	"fmt"
 )
 
 type Coord struct {
@@ -16,10 +16,10 @@ type CoordLink struct {
 }
 
 type Move struct {
-	Value Coord
-	Prev  Coord
-	Dist  float64
-	Step int
+	Value   Coord
+	Prev    Coord
+	Dist    float64
+	Step    int
 	Visited bool
 }
 
@@ -37,7 +37,7 @@ func printPath(start Coord, finish Coord, board [][]Move) {
 
 		fmt.Println(point.Step, ":", prevCoord, "=>", point.Value)
 
-		if (prevCoord.X == start.X && prevCoord.Y == start.Y) {
+		if prevCoord.X == start.X && prevCoord.Y == start.Y {
 			end = true
 		} else {
 			point = board[prevCoord.Y][prevCoord.X]
@@ -45,9 +45,8 @@ func printPath(start Coord, finish Coord, board [][]Move) {
 	}
 }
 
-
 func CountSteps(start Coord, finish Coord, size int) int {
-	TWO_MOVES_DIST := 2 * math.Sqrt(5)// 2^2 + 1^2 - one horse move
+	TWO_MOVES_DIST := 2 * math.Sqrt(5) // 2^2 + 1^2 - one horse move
 	visited := map[string]bool{}
 	board := make([][]Move, size)
 	steps := 0
@@ -82,15 +81,15 @@ func CountSteps(start Coord, finish Coord, size int) int {
 		neighbours := map[string]CoordLink{}
 
 		sortedInsert := func(coord Move) {
-			if (coord.Dist > TWO_MOVES_DIST && len(ret) > 0) {
+			if coord.Dist > TWO_MOVES_DIST && len(ret) > 0 {
 				val := ret[0]
-				if (val.Dist > coord.Dist) {
+				if val.Dist > coord.Dist {
 					ret[0] = coord
 				} else {
 					//ret[0] = val
 				}
 			} else {
-				ret = append(ret, coord);
+				ret = append(ret, coord)
 			}
 		}
 
@@ -109,30 +108,30 @@ func CountSteps(start Coord, finish Coord, size int) int {
 			}
 
 			for _, c := range array {
-				neighbours[formKey(c)] = CoordLink{c, coord}//createCoord(c, coord.Value)
+				neighbours[formKey(c)] = CoordLink{c, coord} //createCoord(c, coord.Value)
 			}
 
 		}
 
-		nextStep := step + 1;
+		nextStep := step + 1
 		for _, coord := range neighbours {
 
 			if !(coord.Value.X < 0 || coord.Value.Y < 0 || coord.Value.X >= size || coord.Value.Y >= size) {
 
 				cell := board[coord.Value.Y][coord.Value.X]
 
-				if (!cell.Visited || nextStep < cell.Step) {
+				if !cell.Visited || nextStep < cell.Step {
 					newCell := Move{
 						coord.Value,
 						coord.Prev,
-						math.Sqrt(math.Pow(float64(coord.Value.X - xf), 2) + math.Pow(float64(coord.Value.Y - yf), 2)),						nextStep,
+						math.Sqrt(math.Pow(float64(coord.Value.X - xf), 2) + math.Pow(float64(coord.Value.Y - yf), 2)), nextStep,
 						true,
 					}
 
 					board[coord.Value.Y][coord.Value.X] = newCell
 					sortedInsert(newCell)
 
-					if (coord.Value.X == xf && coord.Value.Y == yf) {
+					if coord.Value.X == xf && coord.Value.Y == yf {
 						found = true
 					}
 				}
