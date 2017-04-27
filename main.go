@@ -44,8 +44,9 @@ func runChess() {
 	boardSize := 100
 	start := chess.Coord{3, 1}
 	finish := chess.Coord{98, 72}
+	logSteps := true
 
-	steps := chess.CountSteps(start, finish, boardSize)
+	steps := chess.CountSteps(start, finish, boardSize, logSteps)
 
 	fmt.Println("boardSize:", boardSize)
 	fmt.Println("start:", start)

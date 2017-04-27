@@ -45,7 +45,7 @@ func printPath(start Coord, finish Coord, board [][]Move) {
 	}
 }
 
-func CountSteps(start Coord, finish Coord, size int) int {
+func CountSteps(start Coord, finish Coord, size int, log bool) int {
 	TWO_MOVES_DIST := 2 * math.Sqrt(5) // 2^2 + 1^2 - one horse move
 	visited := map[string]bool{}
 	board := make([][]Move, size)
@@ -139,7 +139,9 @@ func CountSteps(start Coord, finish Coord, size int) int {
 		steps++
 	}
 
-	//printPath(start, finish, board)
+	if (log) {
+		printPath(start, finish, board)
+	}
 
 	return steps
 
