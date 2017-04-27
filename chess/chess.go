@@ -10,6 +10,11 @@ type Coord struct {
 	X, Y int
 }
 
+type CoordLink struct {
+	Value Coord
+	Prev  Coord
+}
+
 type Move struct {
 	Value Coord
 	Prev  Coord
@@ -23,22 +28,46 @@ func formKey(coord Coord) string {
 	return strconv.Itoa(coord.X) + "-" + strconv.Itoa(coord.Y)
 }
 
+func printPath(start Coord, finish Coord, board [][]Move) {
+	point := board[finish.Y][finish.X]
+	end := false
+
+	for end == false {
+		prevCoord := point.Prev
+
+		fmt.Println(point.Step, ":", prevCoord, "=>", point.Value)
+
+		if (prevCoord.X == start.X && prevCoord.Y == start.Y) {
+			end = true
+		} else {
+			point = board[prevCoord.Y][prevCoord.X]
+		}
+	}
+}
+
 
 func CountSteps(start Coord, finish Coord, size int) int {
 	TWO_MOVES_DIST := 2 * math.Sqrt(5)// 2^2 + 1^2 - one horse move
 	visited := map[string]bool{}
 	board := make([][]Move, size)
+	steps := 0
+	found := false
+	xf := finish.X
+	yf := finish.Y
 
 	for i, _ := range board {
 		board[i] = make([]Move, size)
 	}
 
-	xf := finish.X
-	yf := finish.Y
-	steps := 0
-	found := false
+	board[start.Y][start.X] = Move{
+		start,
+		start,
+		math.Sqrt(math.Pow(float64(start.X - xf), 2) + math.Pow(float64(start.Y - yf), 2)),
+		0,
+		true,
+	}
 
-	createCoord := func(point Coord, prev Coord) Move {
+	/*createCoord := func(point Coord, prev Coord) Move {
 		return Move{
 			point,
 			prev,
@@ -46,11 +75,11 @@ func CountSteps(start Coord, finish Coord, size int) int {
 			steps,
 			true,
 		}
-	}
+	}*/
 
-	visitNeighbours := func(points []Move, step int) (ret []Move) {
-		ret = []Move{}
-		neighbours := map[string]Move{}
+	visitNeighbours := func(points []Coord, step int) (result []Coord) {
+		ret := []Move{}
+		neighbours := map[string]CoordLink{}
 
 		sortedInsert := func(coord Move) {
 			if (coord.Dist > TWO_MOVES_DIST && len(ret) > 0) {
@@ -66,21 +95,21 @@ func CountSteps(start Coord, finish Coord, size int) int {
 		}
 
 		for _, coord := range points {
-			visited[formKey(coord.Value)] = true
+			visited[formKey(coord)] = true
 
 			array := []Coord{
-				{coord.Value.X - 2, coord.Value.Y - 1},
-				{coord.Value.X - 2, coord.Value.Y + 1},
-				{coord.Value.X - 1, coord.Value.Y - 2},
-				{coord.Value.X - 1, coord.Value.Y + 2},
-				{coord.Value.X + 1, coord.Value.Y - 2},
-				{coord.Value.X + 1, coord.Value.Y + 2},
-				{coord.Value.X + 2, coord.Value.Y - 1},
-				{coord.Value.X + 2, coord.Value.Y + 1},
+				{coord.X - 2, coord.Y - 1},
+				{coord.X - 2, coord.Y + 1},
+				{coord.X - 1, coord.Y - 2},
+				{coord.X - 1, coord.Y + 2},
+				{coord.X + 1, coord.Y - 2},
+				{coord.X + 1, coord.Y + 2},
+				{coord.X + 2, coord.Y - 1},
+				{coord.X + 2, coord.Y + 1},
 			}
 
 			for _, c := range array {
-				neighbours[formKey(c)] = createCoord(c, coord.Value)
+				neighbours[formKey(c)] = CoordLink{c, coord}//createCoord(c, coord.Value)
 			}
 
 		}
@@ -90,50 +119,41 @@ func CountSteps(start Coord, finish Coord, size int) int {
 
 			if !(coord.Value.X < 0 || coord.Value.Y < 0 || coord.Value.X >= size || coord.Value.Y >= size) {
 
-				cell := board[coord.Value.X][coord.Value.Y]
+				cell := board[coord.Value.Y][coord.Value.X]
 
 				if (!cell.Visited || nextStep < cell.Step) {
-					board[coord.Value.X][coord.Value.Y] = Move{
+					newCell := Move{
 						coord.Value,
 						coord.Prev,
-						coord.Dist,
-						nextStep,
+						math.Sqrt(math.Pow(float64(coord.Value.X - xf), 2) + math.Pow(float64(coord.Value.Y - yf), 2)),						nextStep,
 						true,
 					}
+
+					board[coord.Value.Y][coord.Value.X] = newCell
+					sortedInsert(newCell)
 
 					if (coord.Value.X == xf && coord.Value.Y == yf) {
 						found = true
 					}
-					sortedInsert(coord)
 				}
 
 			}
 		}
+		for _, move := range ret {
+			result = append(result, move.Value)
+		}
 		return
 	}
 
-	next := []Move{{start, Coord{}, 0, 0, true,}}
+	next := []Coord{start}
 
 	for !found {
-		//fmt.Println(steps, next[0].Prev, "=>", next[0].Value)
 		next = visitNeighbours(next, steps)
 		steps++
 	}
 
+	//printPath(start, finish, board)
+
 	return steps
-
-}
-
-func main() {
-	boardSize := 10000
-	start := Coord{0, 0}
-	finish := Coord{9999, 9999}
-
-	stepCount := CountSteps(start, finish, boardSize)
-
-	fmt.Println("boardSize:", boardSize)
-	fmt.Println("start:", start)
-	fmt.Println("finish:", finish)
-	fmt.Println("stepCount:", stepCount)
 
 }
