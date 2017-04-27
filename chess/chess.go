@@ -20,7 +20,6 @@ type Move struct {
 	Prev    Coord
 	Dist    float64
 	Step    int
-	Visited bool
 }
 
 //Generate a string key from the Coords instance
@@ -61,7 +60,6 @@ func CountSteps(start Coord, finish Coord, size int, log bool) int {
 		start,
 		math.Sqrt(math.Pow(float64(start.X - finish.X), 2) + math.Pow(float64(start.Y - finish.Y), 2)),
 		0,
-		true,
 	}
 
 	visitNeighbours := func(points []Coord, step int) (result []Coord) {
@@ -105,12 +103,12 @@ func CountSteps(start Coord, finish Coord, size int, log bool) int {
 
 				cell := board[coord.Value.Y][coord.Value.X]
 
-				if !cell.Visited || nextStep < cell.Step {
+				//Check if we weren't on this board place before or we can find more optimized way to it
+				if (cell == Move{} || nextStep < cell.Step) {
 					newCell := Move{
 						coord.Value,
 						coord.Prev,
 						math.Sqrt(math.Pow(float64(coord.Value.X - finish.X), 2) + math.Pow(float64(coord.Value.Y - finish.Y), 2)), nextStep,
-						true,
 					}
 
 					board[coord.Value.Y][coord.Value.X] = newCell

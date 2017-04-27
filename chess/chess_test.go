@@ -50,7 +50,7 @@ var tests = []testpair{
 
 func TestCountSteps(t *testing.T) {
 	for _, pair := range tests {
-		v := CountSteps(pair.start, pair.finish, pair.size)
+		v := CountSteps(pair.start, pair.finish, pair.size, false)
 		if v != pair.result {
 			t.Error(
 				"For", pair.id,
