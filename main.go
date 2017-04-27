@@ -41,9 +41,9 @@ func runMaze() {
 }
 
 func runChess() {
-	boardSize := 100
+	boardSize := 10000
 	start := chess.Coord{3, 1}
-	finish := chess.Coord{98, 72}
+	finish := chess.Coord{908, 72}
 	logSteps := true
 
 	steps := chess.CountSteps(start, finish, boardSize, logSteps)
@@ -56,6 +56,6 @@ func runChess() {
 
 func main() {
 	runMaze()
-	fmt.Println("====================================================")
+	fmt.Println("<================================================================================>")
 	runChess()
 }

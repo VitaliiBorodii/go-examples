@@ -47,12 +47,10 @@ func printPath(start Coord, finish Coord, board [][]Move) {
 
 func CountSteps(start Coord, finish Coord, size int, log bool) int {
 	TWO_MOVES_DIST := 2 * math.Sqrt(5) // 2^2 + 1^2 - one horse move
-	visited := map[string]bool{}
 	board := make([][]Move, size)
 	steps := 0
 	found := false
-	xf := finish.X
-	yf := finish.Y
+
 
 	for i, _ := range board {
 		board[i] = make([]Move, size)
@@ -61,7 +59,7 @@ func CountSteps(start Coord, finish Coord, size int, log bool) int {
 	board[start.Y][start.X] = Move{
 		start,
 		start,
-		math.Sqrt(math.Pow(float64(start.X - xf), 2) + math.Pow(float64(start.Y - yf), 2)),
+		math.Sqrt(math.Pow(float64(start.X - finish.X), 2) + math.Pow(float64(start.Y - finish.Y), 2)),
 		0,
 		true,
 	}
@@ -82,7 +80,6 @@ func CountSteps(start Coord, finish Coord, size int, log bool) int {
 		}
 
 		for _, coord := range points {
-			visited[formKey(coord)] = true
 
 			array := []Coord{
 				{coord.X - 2, coord.Y - 1},
@@ -112,14 +109,14 @@ func CountSteps(start Coord, finish Coord, size int, log bool) int {
 					newCell := Move{
 						coord.Value,
 						coord.Prev,
-						math.Sqrt(math.Pow(float64(coord.Value.X - xf), 2) + math.Pow(float64(coord.Value.Y - yf), 2)), nextStep,
+						math.Sqrt(math.Pow(float64(coord.Value.X - finish.X), 2) + math.Pow(float64(coord.Value.Y - finish.Y), 2)), nextStep,
 						true,
 					}
 
 					board[coord.Value.Y][coord.Value.X] = newCell
 					sortedInsert(newCell)
 
-					if coord.Value.X == xf && coord.Value.Y == yf {
+					if newCell.Dist == 0 {
 						found = true
 					}
 				}
