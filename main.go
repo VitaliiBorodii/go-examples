@@ -2,6 +2,7 @@ package main
 
 import (
 	"./chess"
+	"./dove"
 	"./maze"
 	"fmt"
 )
@@ -54,8 +55,18 @@ func runChess() {
 	fmt.Println("steps:", steps)
 }
 
+func runDove() {
+	food := 55
+	result := dove.FeedCount(food)
+	fmt.Println("Can feed '", result, "' doves with `", food, "` ammount of food")
+
+}
+
 func main() {
+	divider := "<================================================================================>"
 	runMaze()
-	fmt.Println("<================================================================================>")
+	fmt.Println(divider)
 	runChess()
+	fmt.Println(divider)
+	runDove()
 }

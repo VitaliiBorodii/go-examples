@@ -16,10 +16,10 @@ type CoordLink struct {
 }
 
 type Move struct {
-	Value   Coord
-	Prev    Coord
-	Dist    float64
-	Step    int
+	Value Coord
+	Prev  Coord
+	Dist  float64
+	Step  int
 }
 
 //Generate a string key from the Coords instance
@@ -49,7 +49,6 @@ func CountSteps(start Coord, finish Coord, size int, log bool) int {
 	board := make([][]Move, size)
 	steps := 0
 	found := false
-
 
 	for i, _ := range board {
 		board[i] = make([]Move, size)
@@ -134,7 +133,7 @@ func CountSteps(start Coord, finish Coord, size int, log bool) int {
 		steps++
 	}
 
-	if (log) {
+	if log {
 		printPath(start, finish, board)
 	}
 
