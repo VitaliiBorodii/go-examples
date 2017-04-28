@@ -3,6 +3,7 @@ package main
 import (
 	"./chess"
 	"./dove"
+	"./forest"
 	"./maze"
 	"fmt"
 )
@@ -62,6 +63,16 @@ func runDove() {
 
 }
 
+func runFell() {
+	initialTrees := 26
+	treesToLeft := 12
+	result := forest.CountWays(initialTrees, treesToLeft)
+
+	fmt.Println("Have trees:", initialTrees)
+	fmt.Println(result, "ways, to left", treesToLeft, "with same distance between them")
+
+}
+
 func main() {
 	divider := "<================================================================================>"
 	runMaze()
@@ -69,4 +80,6 @@ func main() {
 	runChess()
 	fmt.Println(divider)
 	runDove()
+	fmt.Println(divider)
+	runFell()
 }
