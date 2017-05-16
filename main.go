@@ -5,7 +5,9 @@ import (
 	"./dove"
 	"./forest"
 	"./maze"
+	Streaks "./divisible-streaks"
 	"fmt"
+	"math"
 )
 
 func runMaze() {
@@ -69,8 +71,23 @@ func runFell() {
 	result := forest.CountWays(initialTrees, treesToLeft)
 
 	fmt.Println("Have trees:", initialTrees)
-	fmt.Println(result, "ways, to left", treesToLeft, "with same distance between them")
+	fmt.Println(result, "ways, to left", treesToLeft, " trees with same distance between them")
 
+}
+
+func runStreaks() {
+	var result int = 0
+	for i := 1; i < 14; i++ {
+		fmt.Println("calculating i =  ", i);
+		localResult := Streaks.P(i, math.Pow(4, float64(i)))
+		fmt.Println("local result:", localResult)
+
+		result += localResult;
+
+	}
+	fmt.Println("Streaks.P(3, 13)", Streaks.P(3, 13));
+	fmt.Println("Streaks.P(6, 10^6)", Streaks.P(6, math.Pow(10, 6)))
+	fmt.Println("Result: ", result);
 }
 
 func main() {
@@ -82,4 +99,7 @@ func main() {
 	runDove()
 	fmt.Println(divider)
 	runFell()
+	fmt.Println(divider)
+	runStreaks()
+	fmt.Println(divider)
 }
