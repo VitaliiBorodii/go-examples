@@ -8,6 +8,9 @@ import (
 	Streaks "./divisible-streaks"
 	"fmt"
 	"math"
+	"time"
+	"sync"
+	"strconv"
 )
 
 func runMaze() {
@@ -75,19 +78,40 @@ func runFell() {
 
 }
 
-func runStreaks() {
-	var result int = 0
-	for i := 1; i < 14; i++ {
-		fmt.Println("calculating i =  ", i);
-		localResult := Streaks.P(i, math.Pow(4, float64(i)))
-		fmt.Println("local result:", localResult)
+func runStreaksAsync(steps int) {
+	start := time.Now()
+	result := 0
+	const num = 4
+	var wg sync.WaitGroup
+	var ch = make(chan int)
 
-		result += localResult;
-
+	for i := 1; i <= steps; i++ {
+		wg.Add(1)
+		go Streaks.PAsync(i, math.Pow(float64(num), float64(i)), ch)
 	}
-	fmt.Println("Streaks.P(3, 13)", Streaks.P(3, 13));
-	fmt.Println("Streaks.P(6, 10^6)", Streaks.P(6, math.Pow(10, 6)))
-	fmt.Println("Result: ", result);
+
+	go func() {
+		for partialResult := range ch {
+			result += partialResult
+			wg.Done()
+		}
+	}()
+
+	wg.Wait()
+	fmt.Println("Async function P(i, " + strconv.Itoa(num) + "^i), where i = " + strconv.Itoa(steps) + " took :", time.Since(start), ", and result: ", result)
+
+}
+
+func runStreaksSync(steps int) {
+	start := time.Now()
+	result := 0
+	const num = 4
+
+	for i := 1; i <= steps; i++ {
+		result += Streaks.P(i, math.Pow(float64(num), float64(i)))
+	}
+
+	fmt.Println("Sync function P(i, " + strconv.Itoa(num) + "^i), where i = " + strconv.Itoa(steps) + " took :", time.Since(start), ", and result: ", result)
 }
 
 func main() {
@@ -100,6 +124,7 @@ func main() {
 	fmt.Println(divider)
 	runFell()
 	fmt.Println(divider)
-	runStreaks()
+	runStreaksSync(14)
+	runStreaksAsync(14)
 	fmt.Println(divider)
 }
