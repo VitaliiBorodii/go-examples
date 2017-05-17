@@ -57,7 +57,7 @@ func CountSteps(start Coord, finish Coord, size int, log bool) int {
 	board[start.Y][start.X] = Move{
 		start,
 		start,
-		math.Sqrt(math.Pow(float64(start.X - finish.X), 2) + math.Pow(float64(start.Y - finish.Y), 2)),
+		math.Sqrt(math.Pow(float64(start.X-finish.X), 2) + math.Pow(float64(start.Y-finish.Y), 2)),
 		0,
 	}
 
@@ -107,7 +107,7 @@ func CountSteps(start Coord, finish Coord, size int, log bool) int {
 					newCell := Move{
 						coord.Value,
 						coord.Prev,
-						math.Sqrt(math.Pow(float64(coord.Value.X - finish.X), 2) + math.Pow(float64(coord.Value.Y - finish.Y), 2)), nextStep,
+						math.Sqrt(math.Pow(float64(coord.Value.X-finish.X), 2) + math.Pow(float64(coord.Value.Y-finish.Y), 2)), nextStep,
 					}
 
 					board[coord.Value.Y][coord.Value.X] = newCell

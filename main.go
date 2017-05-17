@@ -124,7 +124,7 @@ func main() {
 	fmt.Println(divider)
 	runFell()
 	fmt.Println(divider)
-	runStreaksSync(14)
-	runStreaksAsync(14)
+	runStreaksSync(13)
+	runStreaksAsync(13)
 	fmt.Println(divider)
 }

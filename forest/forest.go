@@ -17,7 +17,7 @@ func CountWays(trees int, left int) int {
 	diff := int(math.Ceil(float64(trees) / float64(left)))
 
 	for i := 0; i < diff; i++ {
-		acc := trees - (left - 1) * (i + 1)
+		acc := trees - (left-1)*(i+1)
 		if acc < 0 {
 			break
 		}

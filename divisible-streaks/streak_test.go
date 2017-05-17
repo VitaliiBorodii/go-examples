@@ -1,7 +1,6 @@
 package divisible_streaks
 
 import (
-	"sync"
 	"testing"
 )
 
@@ -20,7 +19,7 @@ var tests = []testpair{
 		1,
 	},
 	{
-		1,
+		2,
 		6,
 		1000000,
 		14286,
@@ -44,20 +43,11 @@ func TestP(t *testing.T) {
 func TestPAsync(t *testing.T) {
 	for _, pair := range tests {
 		var c = make(chan int)
-		var wg sync.WaitGroup
 		var v int
-		wg.Add(1)
 
 		go PAsync(pair.s, pair.N, c)
 
-		go func() {
-			for result := range c {
-				v = result
-				wg.Done()
-			}
-		}()
-
-		wg.Wait()
+		v = <-c
 
 		if v != pair.result {
 			t.Error(

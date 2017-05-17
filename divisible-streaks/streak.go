@@ -14,7 +14,7 @@ func streak(n int) int {
 	return k
 }
 
-func PAsync(s int, N float64, c chan <- int) {
+func PAsync(s int, N float64, c chan<- int) {
 	c <- P(s, N)
 }
 
