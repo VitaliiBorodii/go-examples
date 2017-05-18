@@ -44,7 +44,7 @@ func CanPass(start Coord, finish Coord, maze [][]int) bool {
 
 			if !(ok || coord.X < 0 || coord.Y < 0 || coord.X >= x || coord.Y >= y) {
 				/*
-					if we can go this point the add it to the result array
+					if we can go to this point then add it to the result array
 					if not - mark it as unreachable
 				*/
 				if maze[coord.Y][coord.X] == 0 {
