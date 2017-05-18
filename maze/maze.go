@@ -63,12 +63,8 @@ func CanPass(start Coord, finish Coord, maze [][]int) bool {
 		next = visitNeighbours(next)
 	}
 
-	key, ok := visited[formKey(finish)]
+	_, ok := visited[formKey(finish)]
 
-	if ok {
-		return key
-	} else {
-		return false
-	}
+	return ok
 
 }
